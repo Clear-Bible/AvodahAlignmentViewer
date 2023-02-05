@@ -14,8 +14,8 @@ namespace AvodahAlignmentViewer.ViewModels
     {
         #region Member Variables   
 
-        private Alignment _clearAlignment = new();
-        private Line[]? _goldStandardAlignment;
+        private Alignment _clearAlignment = new();  // Avodah alignment
+        private Line[]? _goldStandardAlignment;  // NIV alignment
         private string _currentVerse;
 
         #endregion //Member Variables
@@ -91,7 +91,6 @@ namespace AvodahAlignmentViewer.ViewModels
             var thisVersion = Assembly.GetEntryAssembly().GetName().Version;
             _versionNumber = $"{thisVersion.Major}.{thisVersion.Minor}.{thisVersion.Build}.{thisVersion.Revision}";
 
-
             Output = "Loading Data";
         }
 
@@ -112,6 +111,7 @@ namespace AvodahAlignmentViewer.ViewModels
                 GenerateOutput();
             }
 
+            // turn off progress circle
             ProgressCircleVisibility = Visibility.Collapsed;
 
             base.OnViewLoaded(view);
@@ -122,6 +122,10 @@ namespace AvodahAlignmentViewer.ViewModels
 
         #region Methods
 
+
+        /// <summary>
+        /// Generate the verse output for display
+        /// </summary>
         private void GenerateOutput()
         {
             VerseField = _currentVerse;
@@ -144,12 +148,14 @@ namespace AvodahAlignmentViewer.ViewModels
             var verse = _clearAlignment.verses.FirstOrDefault(x => x.VerseId == _currentVerse);
             if (verse is not null)
             {
-                _output = $"Book: {_currentVerse.Substring(0, 2)}   Chapter: {_currentVerse.Substring(2, 3)}   Verse: {_currentVerse.Substring(6, 3)}";
+                _output = $"Book: {_currentVerse.Substring(0, 2)}   Chapter: {_currentVerse.Substring(2, 3)}   Verse: {_currentVerse.Substring(5, 3)}\n";
 
                 _output += $"Malay Verse Text: {verse.VerseText}\n";
 
                 _output += GetNivVerseText() + "\n\n";
 
+
+                // loop through the manuscript words
                 for (int i = 0; i < verse.Manuscript.Count; i++)
                 {
                     var source = verse.Manuscript[i];
@@ -181,6 +187,13 @@ namespace AvodahAlignmentViewer.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Returns the target word based on an index
+        /// </summary>
+        /// <param name="verse"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         private string GetTargetWord(Verse verse, int i)
         {
             // ReSharper disable once ForCanBeConvertedToForeach
@@ -203,7 +216,10 @@ namespace AvodahAlignmentViewer.ViewModels
         }
 
 
-
+        /// <summary>
+        /// Retrieves the complete verse text for the NIV for a verse
+        /// </summary>
+        /// <returns></returns>
         private string GetNivVerseText()
         {
             if (_goldStandardAlignment != null)
@@ -230,6 +246,10 @@ namespace AvodahAlignmentViewer.ViewModels
             return $"NIV Verse Text: {String.Empty}";
         }
 
+
+        /// <summary>
+        /// Go back one verse
+        /// </summary>
         // ReSharper disable once UnusedMember.Global
         public void VerseBack()
         {
@@ -245,6 +265,9 @@ namespace AvodahAlignmentViewer.ViewModels
             }
         }
 
+        /// <summary>
+        /// Go forward a verse
+        /// </summary>
         // ReSharper disable once UnusedMember.Global
         public void VerseForward()
         {
@@ -260,6 +283,11 @@ namespace AvodahAlignmentViewer.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Load in the avodah alignments and deserialize them into an object
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadAvodahAlignment()
         {
             var filePath = Path.Combine(Environment.CurrentDirectory, @"DataFiles\alignmentNTclear.json");
@@ -291,6 +319,10 @@ namespace AvodahAlignmentViewer.ViewModels
             });
         }
 
+        /// <summary>
+        /// Load in the NIV and deserialize it into an object
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadGoldStandard()
         {
             var nivPath = Path.Combine(Environment.CurrentDirectory, @"DataFiles\niv84.nt.alignment.json");
@@ -317,6 +349,10 @@ namespace AvodahAlignmentViewer.ViewModels
             });
         }
 
+
+        /// <summary>
+        /// Exit the program
+        /// </summary>
         // ReSharper disable once UnusedMember.Global
         public void Close()
         {
@@ -324,9 +360,6 @@ namespace AvodahAlignmentViewer.ViewModels
         }
 
         #endregion // Methods
-
-
-
 
     }
 }
