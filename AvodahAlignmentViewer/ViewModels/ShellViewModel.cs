@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using AvodahAlignmentViewer.Helpers;
 
 namespace AvodahAlignmentViewer.ViewModels
 {
@@ -148,7 +149,9 @@ namespace AvodahAlignmentViewer.ViewModels
             var verse = _clearAlignment.verses.FirstOrDefault(x => x.VerseId == _currentVerse);
             if (verse is not null)
             {
-                _output = $"Book: {_currentVerse.Substring(0, 2)}   Chapter: {_currentVerse.Substring(2, 3)}   Verse: {_currentVerse.Substring(5, 3)}\n";
+                _output = BookLookup.GetBookNameFromBookNum(_currentVerse.Substring(0, 2)) +
+                          $" {Convert.ToInt32(_currentVerse.Substring(2, 3))}:{ Convert.ToInt32(_currentVerse.Substring(5, 3))}\n";
+                _output += $"Book: {_currentVerse.Substring(0, 2)}   Chapter: {_currentVerse.Substring(2, 3)}   Verse: {_currentVerse.Substring(5, 3)}\n\n";
 
                 _output += $"Malay Verse Text: {verse.VerseText}\n";
 
