@@ -1,13 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using AvodahAlignmentViewer.Models;
+using Caliburn.Micro;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using AvodahAlignmentViewer.Models;
-using Newtonsoft.Json;
 using System.Windows;
 
 namespace AvodahAlignmentViewer.ViewModels
@@ -43,6 +41,7 @@ namespace AvodahAlignmentViewer.ViewModels
 
 
         private string _output = string.Empty;
+        // ReSharper disable once MemberCanBePrivate.Global
         public string Output
         {
             get => _output;
@@ -135,6 +134,7 @@ namespace AvodahAlignmentViewer.ViewModels
             }
 
             // look for non numeric digits
+            // ReSharper disable once UnusedVariable
             if (double.TryParse(_currentVerse, out double numericValue) == false)
             {
                 Output = "Invalid Verse Number";
@@ -183,6 +183,7 @@ namespace AvodahAlignmentViewer.ViewModels
 
         private string GetTargetWord(Verse verse, int i)
         {
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (int j = 0; j < verse.Alignments.Count; j++)
             {
                 var alignment = verse.Alignments[j];
@@ -205,29 +206,31 @@ namespace AvodahAlignmentViewer.ViewModels
 
         private string GetNivVerseText()
         {
-            foreach (var line in _goldStandardAlignment)
-            {
-                var verseIdLong = line.manuscript.words[0].id;
-                var verseId = verseIdLong.ToString().Substring(0, 8);
-                if (verseId == _currentVerse)
+            if (_goldStandardAlignment != null)
+                foreach (var line in _goldStandardAlignment)
                 {
-                    // convert the NIV tokens into a sentence
-                    var _nivTargetArray = line.translation;
-
-                    string verseText = "";
-                    foreach (var translationWord in _nivTargetArray.words)
+                    var verseIdLong = line.manuscript.words[0].id;
+                    var verseId = verseIdLong.ToString().Substring(0, 8);
+                    if (verseId == _currentVerse)
                     {
-                        verseText += translationWord.text + " ";
-                    }
+                        // convert the NIV tokens into a sentence
+                        var nivTargetArray = line.translation;
 
-                    return $"NIV Verse Text: {verseText.Trim()}";
+                        string verseText = "";
+                        foreach (var translationWord in nivTargetArray.words)
+                        {
+                            verseText += translationWord.text + " ";
+                        }
+
+                        return $"NIV Verse Text: {verseText.Trim()}";
+                    }
                 }
-            }
 
 
             return $"NIV Verse Text: {String.Empty}";
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void VerseBack()
         {
             try
@@ -242,6 +245,7 @@ namespace AvodahAlignmentViewer.ViewModels
             }
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void VerseForward()
         {
             try
@@ -273,7 +277,9 @@ namespace AvodahAlignmentViewer.ViewModels
             {
                 try
                 {
+#pragma warning disable CS8601
                     _clearAlignment = JsonConvert.DeserializeObject<Alignment>(jsonText);
+#pragma warning restore CS8601
                 }
                 catch (Exception e)
                 {
@@ -311,6 +317,7 @@ namespace AvodahAlignmentViewer.ViewModels
             });
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void Close()
         {
             this.TryCloseAsync();

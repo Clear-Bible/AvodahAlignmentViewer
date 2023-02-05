@@ -8,11 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DataFiles\alignmentNTclear.json" />
-    <None Remove="DataFiles\niv84.nt.alignment.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
     <PackageReference Include="MaterialDesignThemes" Version="4.8.0-ci155" />
@@ -20,10 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataFiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Update="DataFiles\alignmentNTclear.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DataFiles\niv84.nt.alignment.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="DataFiles\niv84.ot.alignment.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
