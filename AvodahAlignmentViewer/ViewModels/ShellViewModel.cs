@@ -163,21 +163,22 @@ namespace AvodahAlignmentViewer.ViewModels
                 {
                     var source = verse.Manuscript[i];
                     _output += "-----------------------------------------------------------------------------------\n";
-                    _output += $"Lemma: {source.Lemma}   MARBLE Pos: {source.MarblePos} ({source.MarblePosLong})\n";
+                    _output += $"Lemma: {source.Lemma}\n";
+                    _output += $"MARBLE Pos: {source.MarblePos} ({source.MarblePosLong})\n";
                     _output += $"Domain: {source.MarbleSemanticDomain}\n";
                     _output += $"Domain Definition: {source.MarbleSemanticDomainDefinition}\n";
 
-                    _output += "(Malay - NIV) mappings:\n";
-                    _output += "----------------------------\n";
+                    _output += "    (Malay - NIV) mappings:\n";
+                    _output += "    ----------------------------\n";
 
                     var target = GetTargetWord(verse, i);
                     string niv = source.GoldStandardGlosses;
                     if (niv == "")
                     {
-                        niv = "[]";
+                        niv = "[ ]";
                     }
 
-                    _output += $"  {niv}   -->  {target}\n";
+                    _output += $"      {target}   -->  {niv}\n";
                     _output += "-----------------------------------------------------------------------------------\n";
                     _output += "\n\n";
                 }
@@ -215,7 +216,7 @@ namespace AvodahAlignmentViewer.ViewModels
                 }
             }
 
-            return "[]";
+            return "[ ]";
         }
 
 
